@@ -1,0 +1,1 @@
+Oh hey! Are you here to help with the harvest? #speaker:Villager #portrait:farmer3 #layout:right

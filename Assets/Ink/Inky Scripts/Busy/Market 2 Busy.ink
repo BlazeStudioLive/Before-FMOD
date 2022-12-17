@@ -1,0 +1,1 @@
+Oooo, my. I'm sorry, I don't have time to talk right now. #speaker:Villager #portrait:market2 #layout:right

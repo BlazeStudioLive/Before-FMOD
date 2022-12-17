@@ -1,0 +1,1 @@
+Welcome! I'm sorry, but I am in the middle of preparing for an important ritual. I'm too busy to talk to you at the moment. #speaker:Priestess #portrait:temple1 #layout:right

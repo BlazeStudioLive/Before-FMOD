@@ -1,0 +1,1 @@
+I'm too busy to talk right now. #speaker:Villager #portrait:market3 #layout:right

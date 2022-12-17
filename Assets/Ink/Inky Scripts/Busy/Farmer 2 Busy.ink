@@ -1,0 +1,1 @@
+I love farming! #speaker:Villager #portrait:farmer2 #layout:right

@@ -1,0 +1,1 @@
+You're standing in my way. Would you move, please? #speaker:Villager #portrait:farmer1 #layout:right
