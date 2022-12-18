@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using FMOD.Studio;
 
 public enum PlayerState
 {
@@ -23,12 +24,14 @@ public class PlayerMovement : MonoBehaviour, IDataPersistence
 //  public VectorValue startingPosition;
     public Inventory playerInventory;
     public SpriteRenderer receivedItemSprite;
-    
- //   public int startKnowledge = 0;
- //   public int currentKnowledge;
- //   public KnowledgeBar knowledgeBar;
 
-    // Start is called before the first frame update
+    //   public int startKnowledge = 0;
+    //   public int currentKnowledge;
+    //   public KnowledgeBar knowledgeBar;
+
+    private EventInstance playerFootsteps;
+    private bool walking = false;
+
     void Start()
     {
         currentState = PlayerState.walk;
@@ -36,6 +39,7 @@ public class PlayerMovement : MonoBehaviour, IDataPersistence
         myRigidbody = GetComponent<Rigidbody2D>();
         animator.SetFloat("moveX", 0);
         animator.SetFloat("moveY", -1);
+        playerFootsteps = AudioManager.instance.CreateEventInstance(FMODEvents.instance.playerFootsteps);
         //  transform.position = startingPosition.initialValue;
     //    currentKnowledge = startKnowledge;
     //    knowledgeBar.SetStartKnowledge(startKnowledge);
@@ -68,7 +72,7 @@ public class PlayerMovement : MonoBehaviour, IDataPersistence
         change = Vector3.zero;
         change.x = Input.GetAxisRaw("Horizontal");
         change.y = Input.GetAxisRaw("Vertical");
-        if(Input.GetButton("attack") && currentState !=PlayerState.attack
+        if (Input.GetButton("attack") && currentState !=PlayerState.attack
             && currentState != PlayerState.stagger)
         {
           //  AddKnowledge(1);
@@ -78,7 +82,10 @@ public class PlayerMovement : MonoBehaviour, IDataPersistence
         else if (currentState == PlayerState.walk || currentState == PlayerState.idle)
         {
             UpdateAnimationAndMove();
+ 
         }
+
+
     }
 
    // void AddKnowledge(int knowledge)
@@ -131,10 +138,14 @@ public class PlayerMovement : MonoBehaviour, IDataPersistence
             animator.SetFloat("moveX", change.x);
             animator.SetFloat("moveY", change.y);
             animator.SetBool("moving", true);
+            walking = true;
+            UpdateSound();
         }
         else
         {
             animator.SetBool("moving", false);
+            walking = false;
+            UpdateSound();
         }
     }
 
@@ -144,6 +155,7 @@ public class PlayerMovement : MonoBehaviour, IDataPersistence
         myRigidbody.MovePosition(
             transform.position + change * speed * Time.deltaTime
             );
+
     }
 
     public void Knock(float knockTime, float damage)
@@ -168,6 +180,23 @@ public class PlayerMovement : MonoBehaviour, IDataPersistence
             myRigidbody.velocity = Vector2.zero;
             currentState = PlayerState.idle;
             myRigidbody.velocity = Vector2.zero;
+        }
+    }
+
+    private void UpdateSound()
+    {
+        if (walking == true)
+        {
+            PLAYBACK_STATE playbackState;
+            playerFootsteps.getPlaybackState(out playbackState);
+            if (playbackState.Equals(PLAYBACK_STATE.STOPPED))
+            {
+                playerFootsteps.start();
+            }
+        }
+        else
+        {
+            playerFootsteps.stop(STOP_MODE.ALLOWFADEOUT);
         }
     }
 }

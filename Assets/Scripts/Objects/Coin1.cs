@@ -45,6 +45,7 @@ public class Coin1 : MonoBehaviour, IDataPersistence
         {
             CoinManager.instance.ChangeCoins(1);
             collected = true;
+            AudioManager.instance.PlayOneShot(FMODEvents.instance.coinCollected, this.transform.position);
             visual.gameObject.SetActive(false);
         }
     }
